@@ -26,8 +26,9 @@ erDiagram
     TB_BPI }o--|| VW_BPI : join
     TB_BPI {
         bigint id PK
-        varchar currency_code PK "Currency code (e.g. USD, NTD,......)"
+        varchar currency_code "Currency code (e.g. USD, NTD,......)"
         number rate
+        varchar description
         timestamp submission_date
     }
     TB_CURRENCY }o--|| VW_BPI : join
