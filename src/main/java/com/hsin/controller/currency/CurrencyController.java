@@ -32,7 +32,7 @@ public class CurrencyController {
     public ResponseEntity<List<Currency>> getAll() {
         try {
 
-            List<com.hsin.domain.currency.Currency> _currencies = new ArrayList<>(currencyService.findAll());
+            List<Currency> _currencies = new ArrayList<>(currencyService.findAll());
 
             if (_currencies.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -47,8 +47,8 @@ public class CurrencyController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success")})
     @ApiOperation("單筆查詢")
     @GetMapping("/currency")
-    public ResponseEntity<com.hsin.domain.currency.Currency> getOne(@RequestParam("currency_code_from") String currencyCodeFrom,
-                                                                    @RequestParam(name = "currency_code_to") String currencyCodeTo) {
+    public ResponseEntity<Currency> getOne(@RequestParam("currency_code_from") String currencyCodeFrom,
+                                           @RequestParam(name = "currency_code_to") String currencyCodeTo) {
         try {
             Optional<Currency> _currency = currencyService.findByCurrencyCodeFromAndCurrencyCodeTo(currencyCodeFrom, currencyCodeTo);
             if (_currency.isPresent()) {
@@ -65,12 +65,12 @@ public class CurrencyController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success")})
     @ApiOperation("新增")
     @PostMapping("/currency")
-    public ResponseEntity<com.hsin.domain.currency.Currency> insert(@RequestParam(name = "currency_code_from") String currencyCodeFrom,
-                                                                    @RequestParam(name = "currency_code_to") String currencyCodeTo,
-                                                                    @RequestParam(name = "conversion_rate") BigDecimal conversionRate) {
+    public ResponseEntity<Currency> insert(@RequestParam(name = "currency_code_from") String currencyCodeFrom,
+                                           @RequestParam(name = "currency_code_to") String currencyCodeTo,
+                                           @RequestParam(name = "conversion_rate") BigDecimal conversionRate) {
         try {
-            com.hsin.domain.currency.Currency _currency = currencyService.save(
-                    new com.hsin.domain.currency.Currency(null, currencyCodeFrom, currencyCodeTo, conversionRate, new Date()));
+            Currency _currency = currencyService.save(
+                    new Currency(null, currencyCodeFrom, currencyCodeTo, conversionRate, new Date()));
             return new ResponseEntity<>(_currency, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -81,16 +81,15 @@ public class CurrencyController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success")})
     @ApiOperation("更新")
     @PutMapping("/currency")
-    public ResponseEntity<com.hsin.domain.currency.Currency> update(@RequestParam(name = "currency_code_from") String currencyCodeFrom,
-                                                                    @RequestParam(name = "currency_code_to") String currencyCodeTo,
-                                                                    @RequestParam(name = "conversion_rate") BigDecimal conversionRate) {
+    public ResponseEntity<Currency> update(@RequestParam(name = "currency_code_from") String currencyCodeFrom,
+                                           @RequestParam(name = "currency_code_to") String currencyCodeTo,
+                                           @RequestParam(name = "conversion_rate") BigDecimal conversionRate) {
         try {
-            Optional<com.hsin.domain.currency.Currency> _currency = currencyService.findByCurrencyCodeFromAndCurrencyCodeTo(currencyCodeFrom, currencyCodeTo);
+            Optional<Currency> _currency = currencyService.findByCurrencyCodeFromAndCurrencyCodeTo(currencyCodeFrom, currencyCodeTo);
             if (_currency.isPresent()) {
-                Currency _newCurrency = _currency.get();
-                _newCurrency.setConversionRate(conversionRate);
-                _newCurrency.setSubmissionDate(new Date());
-                return new ResponseEntity<>(currencyService.save(_newCurrency), HttpStatus.OK);
+                _currency.get().setConversionRate(conversionRate);
+                _currency.get().setSubmissionDate(new Date());
+                return new ResponseEntity<>(currencyService.save(_currency.get()), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
