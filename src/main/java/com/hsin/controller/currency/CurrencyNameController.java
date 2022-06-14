@@ -67,7 +67,7 @@ public class CurrencyNameController {
                                                @RequestParam(name = "currency_name") String currencyName) {
         try {
             CurrencyName _currencyName = currencyNameService.save(
-                    new CurrencyName(1L, currencyCode, currencyName, new Date()));
+                    new CurrencyName(null, currencyCode, currencyName, new Date()));
             return new ResponseEntity<>(_currencyName, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -83,6 +83,8 @@ public class CurrencyNameController {
         try {
             Optional<CurrencyName> _currencyName = currencyNameService.findByCurrencyCode(currencyCode);
             if (_currencyName.isPresent()) {
+                _currencyName.get().setCurrencyName(currencyName);
+                _currencyName.get().setSubmissionDate(new Date());
                 return new ResponseEntity<>(currencyNameService.save(_currencyName.get()), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

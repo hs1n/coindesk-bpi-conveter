@@ -34,5 +34,4 @@ public class CurrencyNameService {
     public void deleteAll() {
         currencyNameRepository.deleteAll();
     }
-
 }

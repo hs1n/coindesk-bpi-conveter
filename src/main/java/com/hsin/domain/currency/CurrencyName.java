@@ -24,7 +24,7 @@ import java.util.Objects;
 @Table(name = "tb_currency_name")
 @ApiModel(description = "Currency name")
 public class CurrencyName {
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", unique = true)
     @JsonIgnore
     private Long id;
 

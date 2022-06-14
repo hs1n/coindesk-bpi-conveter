@@ -26,13 +26,13 @@ public class Currency {
     private Long id;
 
     @Id
-    @Column(name = "currency_code_from", length = 3, nullable = false, unique = true)
+    @Column(name = "currency_code_from", length = 3, nullable = false)
     @JsonProperty("currency_code_from")
     @ApiModelProperty(value = "Currency code (from)", required = true)
     private String currencyCodeFrom;
 
     @Id
-    @Column(name = "currency_code_to", length = 3, nullable = false, unique = true)
+    @Column(name = "currency_code_to", length = 3, nullable = false)
     @JsonProperty("currency_code_to")
     @ApiModelProperty(value = "Currency code (to)", required = true)
     private String currencyCodeTo;
